@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRecipe> userRecipes;
 
     public Long getId() {
@@ -95,6 +95,18 @@ public class User implements UserDetails {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public Calendar getCreationDate() {
+        return creationDate;
+    }
+
+    public List<UserRecipe> getUserRecipes() {
+        return userRecipes;
+    }
+
+    public void setUserRecipes(List<UserRecipe> userRecipes) {
+        this.userRecipes = userRecipes;
     }
 
     //Spring security methods

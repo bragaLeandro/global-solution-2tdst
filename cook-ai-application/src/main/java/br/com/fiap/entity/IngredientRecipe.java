@@ -24,4 +24,32 @@ public class IngredientRecipe {
 
     @Column(name = "ingredient_quantity")
     private String ingredientQuantity;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public String getIngredientQuantity() {
+        return ingredientQuantity;
+    }
+
+    public void setIngredientQuantity(String ingredientQuantity) {
+        this.ingredientQuantity = ingredientQuantity;
+    }
 }

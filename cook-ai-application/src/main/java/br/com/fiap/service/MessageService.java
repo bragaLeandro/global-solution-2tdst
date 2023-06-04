@@ -19,18 +19,19 @@ public class MessageService {
 
     private final GptService gptService;
     private final MessageRepository messageRepository;
+    private final RecipeService recipeService;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository, GptService gptService) {
+    public MessageService(MessageRepository messageRepository, GptService gptService, RecipeService recipeService) {
         this.messageRepository = messageRepository;
         this.gptService = gptService;
+        this.recipeService = recipeService;
     }
 
     public RecipeDto sendMessage(Message message) {
-        RecipeDto answer = gptService.sendMessageGpt(message.getQuestion());
-        message.setAnswer(answer.toString());
-//        messageRepository.save(message);
-        return answer;
+        RecipeDto recipe = gptService.sendMessageGpt(message.getQuestion());
+        this.recipeService.saveRecipe(recipe, message.getUser().getId());
+        return recipe;
     }
 
     public List<Message> getMessages() {

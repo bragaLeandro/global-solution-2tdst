@@ -18,7 +18,7 @@ public class Ingredient {
     private Long id;
 
     @Column(name = "ingredient_name")
-    private String ingredientName;
+    private String name;
 
     @Column(name = "category")
     private String category;
@@ -31,11 +31,11 @@ public class Ingredient {
     }
 
     public String getIngredientName() {
-        return ingredientName;
+        return name;
     }
 
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
+    public void setName(String ingredientName) {
+        this.name = ingredientName;
     }
 
     public String getCategory() {
