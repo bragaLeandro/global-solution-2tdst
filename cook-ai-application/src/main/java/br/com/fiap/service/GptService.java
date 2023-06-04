@@ -1,0 +1,64 @@
+package br.com.fiap.service;
+
+import br.com.fiap.constants.PromptConstants;
+import br.com.fiap.dto.RecipeDto;
+import br.com.fiap.entity.Recipe;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
+import com.theokanning.openai.service.OpenAiService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.util.*;
+
+@Service
+public class GptService {
+
+    private final OpenAiService service = new OpenAiService("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", Duration.ofSeconds(60));
+
+    public RecipeDto sendMessageGpt(String message) {
+        List<ChatMessage> messages = Arrays.asList(
+                new ChatMessage(ChatMessageRole.SYSTEM.value(), PromptConstants.RECIPE_INITIALIZER),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_FORMAT),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_RULES),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_LEVELS),
+                new ChatMessage(ChatMessageRole.USER.value(), "Crie uma receita SOMENTE com: " + message)
+        );
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(300)
+                .build();
+
+        String recipe = this.replaceLineSeparator(service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage().getContent());
+
+        return this.jsonToRecipe(recipe);
+    }
+
+    public RecipeDto jsonToRecipe(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        RecipeDto recipe = null;
+        try {
+            recipe = objectMapper.readValue(json, RecipeDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return recipe;
+    }
+    public String replaceLineSeparator(String text) {
+        return text.replace(System.lineSeparator(), "");
+    }
+
+}
