@@ -31,6 +31,7 @@ public class GptService {
                 new ChatMessage(ChatMessageRole.SYSTEM.value(), PromptConstants.RECIPE_INITIALIZER),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_FORMAT),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_RULES),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_EXAMPLE),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_LEVELS),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.LINE_SEPARATOR),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_CREATOR + recipeDto.getIngredients()),

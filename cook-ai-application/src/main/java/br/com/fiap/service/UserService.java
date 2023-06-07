@@ -27,8 +27,9 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public void createUser(User user) {
+    public void createUser(UserRequestDto userDto) {
 
+        User user = modelMapper.map(userDto, User.class);
 
         if (this.findByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email já existe");

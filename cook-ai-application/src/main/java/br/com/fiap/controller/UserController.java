@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         try {
             userService.createUser(user);
         } catch (IllegalArgumentException ie) {
