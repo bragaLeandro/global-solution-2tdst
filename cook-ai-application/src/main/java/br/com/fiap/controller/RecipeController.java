@@ -3,6 +3,7 @@ package br.com.fiap.controller;
 import br.com.fiap.dto.RecipeCreationDto;
 import br.com.fiap.dto.RecipeDto;
 import br.com.fiap.service.RecipeService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class RecipeController {
     }
 
     @PostMapping
-    public RecipeDto createRecipe(@RequestBody @NotNull RecipeCreationDto recipeCreationDto) {
+    public RecipeDto createRecipe(@RequestBody @Valid RecipeCreationDto recipeCreationDto) {
         logger.info("Calling Service(GET) /recipe {}", recipeCreationDto.getIngredients());
         return recipeService.createRecipe(recipeCreationDto);
     }
@@ -42,8 +43,9 @@ public class RecipeController {
         return recipeService.getRecipesPaginated(pageNumber);
     }
 
-//    @DeleteMapping
-//    public ResponseEntity<String> deleteRecipe() {
-//
-//    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> findCountRecipesByUser() {
+        logger.info("Calling Service(GET) /recipe/count");
+        return ResponseEntity.ok(recipeService.findCountRecipesByUser());
+    }
 }

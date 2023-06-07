@@ -19,8 +19,4 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-
-//    public List<IngredientUsageDto> countIngredientUsageByUser() {
-//        return ingredientService.findIngredientUsages();
-//    }
 }

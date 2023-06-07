@@ -31,24 +31,4 @@ public class IngredientService {
         this.userRecipeRepository = userRecipeRepository;
         this.ingredientRepository = ingredientRepository;
     }
-
-//    public List<IngredientUsageDto> findIngredientUsages() {
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Page[] pageResult = ingredientRepository.findTopThreeIngredients(Pageable.ofSize(3));
-//        List<Object[]> content = pageResult.;
-////        if (!userRecipes.isEmpty()) {
-////            List<Recipe> recipes = recipeService.findRecipeByUserRecipes(userRecipes);
-////
-////            Map<String, Long> ingredientCount = recipes.stream()
-////                    .flatMap(recipe -> recipe.getIngredients().stream())
-////                    .map(ingredientRecipe -> ingredientRecipe.getIngredient().getIngredientName())
-////                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-////
-////            return ingredientCount.entrySet().stream()
-////                    .map(entry -> new IngredientUsageDto(entry.getKey(), entry.getValue()))
-////                    .collect(Collectors.toList());
-////
-////        }
-////        return null;
-//    }
 }

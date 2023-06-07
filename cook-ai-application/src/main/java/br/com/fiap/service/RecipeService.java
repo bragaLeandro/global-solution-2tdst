@@ -12,6 +12,7 @@ import br.com.fiap.repository.UserRecipeRepository;
 import br.com.fiap.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,13 @@ public class RecipeService {
 
         this.saveRecipe(recipe, recipeCreationDto.getUser().getId());
         return recipe;
+    }
+
+    public Long findCountRecipesByUser() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long recipesQuantity = userRecipeRepository.findCountRecipesByUser(user);
+        logger.info("Quantity of recipes from userId {} -> {}", user.getId(), recipesQuantity);
+        return recipesQuantity;
     }
 
     public List<RecipeDto> getRecipesPaginated(int pageNumber) {
@@ -117,7 +125,7 @@ public class RecipeService {
     }
 
     List<Recipe> findRecipeByUserRecipes(List<UserRecipe> userRecipes) {
-        logger.info("Calling Service findRecipeByUserRecipes");
+        logger.info("Calling Service findRecipeByUserRecipes...");
 
         return userRecipes.stream()
                 .map(UserRecipe::getRecipe).toList();
@@ -125,6 +133,7 @@ public class RecipeService {
 
     @Transactional
     public void saveRecipe(RecipeDto recipeDto, Long userId) {
+        //TODO: Abstract logic to different methods
         logger.info("Saving recipe {} from userID {}...", recipeDto.getTitle(), userId);
         Recipe recipe = new Recipe();
         recipe.setTitle(recipeDto.getTitle());
@@ -158,52 +167,4 @@ public class RecipeService {
 
         recipeRepository.save(recipe);
     }
-//    @Transactional
-//    public void saveRecipe(RecipeDto recipeDto, Long userId) {
-//        logger.info("Saving recipe {} from userID {}...", recipeDto.getTitle(), userId);
-//
-//        Recipe recipe = createRecipe(recipeDto);
-//        addIngredientsToRecipe(recipe, recipeDto);
-//        associateRecipeToUser(recipe, userId);
-//    }
-//
-//    private Recipe createRecipe(RecipeDto recipeDto) {
-//        Recipe recipe = new Recipe();
-//        recipe.setTitle(recipeDto.getTitle());
-//        recipe.setDifficulty(recipeDto.getDifficulty());
-//        recipe.setPrepTime(recipeDto.getPreparationTime());
-//        recipe.setPreparationMethod(recipeDto.getPreparationMethod());
-//
-//        return recipeRepository.save(recipe);
-//    }
-//
-//    private void addIngredientsToRecipe(Recipe recipe, RecipeDto recipeDto) {
-//        for (IngredientDto ingredientDto : recipeDto.getIngredients()) {
-//            Ingredient ingredient = ingredientRepository.findIngredientByName(ingredientDto.getName())
-//                    .orElseGet(() -> {
-//                        Ingredient newIngredient = new Ingredient();
-//                        newIngredient.setName(ingredientDto.getName());
-//                        return ingredientRepository.save(newIngredient);
-//                    });
-//
-//            IngredientRecipe ingredientRecipe = new IngredientRecipe();
-//            ingredientRecipe.setRecipe(recipe);
-//            ingredientRecipe.setIngredient(ingredient);
-//            ingredientRecipe.setQuantity(ingredientDto.getQuantity());
-//
-//            recipe.getIngredients().add(ingredientRecipe);
-//        }
-//
-//        recipeRepository.save(recipe);
-//    }
-//
-//    private void associateRecipeToUser(Recipe recipe, Long userId) {
-//        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-//        UserRecipe userRecipe = new UserRecipe();
-//        userRecipe.setUser(user);
-//        userRecipe.setRecipe(recipe);
-//
-//        user.getUserRecipes().add(userRecipe);
-//    }
-
 }
