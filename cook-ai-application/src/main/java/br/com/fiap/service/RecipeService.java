@@ -1,7 +1,6 @@
 package br.com.fiap.service;
 
 import br.com.fiap.constants.CommonConstants;
-import br.com.fiap.controller.RecipeController;
 import br.com.fiap.dto.IngredientDto;
 import br.com.fiap.dto.RecipeCreationDto;
 import br.com.fiap.dto.RecipeDto;
@@ -12,7 +11,6 @@ import br.com.fiap.repository.UserRecipeRepository;
 import br.com.fiap.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

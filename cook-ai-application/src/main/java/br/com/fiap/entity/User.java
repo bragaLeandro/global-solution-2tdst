@@ -26,11 +26,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user")
     @Column(name = "id_user")
     private Long id;
+
+    @Column(name = "ds_name")
     private String name;
 
     @Email
+    @Column(name = "ds_email")
     private String email;
 
+    @Column(name = "ds_password", length = 455)
     private String password;
 
     @Temporal(TemporalType.DATE)

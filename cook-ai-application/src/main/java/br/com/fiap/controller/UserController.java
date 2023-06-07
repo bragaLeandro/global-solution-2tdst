@@ -35,4 +35,10 @@ public class UserController {
     public List<User> findAll() {
         return userService.findAll();
     }
+
+    @GetMapping("/count")
+    @RolesAllowed("ADMIN")
+    public ResponseEntity<Long> getCountUsers() {
+        return ResponseEntity.ok(userService.findCountUsersRegistered());
+    }
 }

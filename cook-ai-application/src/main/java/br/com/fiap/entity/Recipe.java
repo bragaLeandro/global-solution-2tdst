@@ -12,10 +12,10 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recipe")
-    @Column(name = "id")
+    @Column(name = "nm_id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "ds_title")
     private String title;
 
     @Column(name = "difficulty")

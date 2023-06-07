@@ -11,15 +11,15 @@ import lombok.Setter;
 public class IngredientRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredientRecipe")
-    @Column(name = "id")
+    @Column(name = "nm_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "fk_recipe_id")
     private Recipe recipe;
 
     @ManyToOne
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "fk_ingredient_id")
     private Ingredient ingredient;
 
     @Column(name = "ingredient_quantity")

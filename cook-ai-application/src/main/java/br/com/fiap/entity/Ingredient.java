@@ -14,10 +14,10 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient")
-    @Column(name = "id")
+    @Column(name = "nm_id")
     private Long id;
 
-    @Column(name = "ingredient_name")
+    @Column(name = "ingredient_name", unique = true)
     private String name;
 
     @Column(name = "category")
