@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name = "role")
     private String role;
 
-    @OneToMany(mappedBy = "user")
-    private List<Message> messages;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRecipe> userRecipes;
 
@@ -88,15 +85,6 @@ public class User implements UserDetails {
     public void setRole(String role) {
         this.role = role;
     }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
     public Calendar getCreationDate() {
         return creationDate;
     }

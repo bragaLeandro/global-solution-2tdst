@@ -1,5 +1,6 @@
 package br.com.fiap.service;
 
+import br.com.fiap.constants.CommonConstants;
 import br.com.fiap.controller.RecipeController;
 import br.com.fiap.dto.IngredientDto;
 import br.com.fiap.dto.RecipeCreationDto;
@@ -15,6 +16,9 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -58,11 +62,14 @@ public class RecipeService {
         return recipe;
     }
 
-    public List<RecipeDto> getRecipesByUser() {
+    public List<RecipeDto> getRecipesByUser(int page) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.debug("User ID -> {}", user.getId());
-        List<UserRecipe> userRecipes = userRecipeRepository.findAllByUser(user);
-        List<Recipe> recipes = this.findRecipeByUserRecipes(userRecipes);
+
+        Pageable pageable = PageRequest.of(page, CommonConstants.PAGE_SIZE);
+
+        Page<UserRecipe> userRecipes = userRecipeRepository.findAllByUser(user, pageable);
+        List<Recipe> recipes = this.findRecipeByUserRecipes(userRecipes.getContent());
 
         return recipes.stream()
                 .map(recipe -> {
