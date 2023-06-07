@@ -44,7 +44,7 @@ public class GptService {
                 .model("gpt-3.5-turbo")
                 .messages(messages)
                 .n(1)
-                .maxTokens(300)
+                .maxTokens(650)
                 .build();
 
         String recipe = this.replaceLineSeparator(service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage().getContent());
