@@ -1,5 +1,8 @@
 package br.com.fiap.security;
 
+import br.com.fiap.dto.IngredientDto;
+import br.com.fiap.entity.Ingredient;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class Configurations {
 
     private final FilterToken filterToken;
+    private ModelMapper modelMapper;
 
     @Autowired
     public Configurations(FilterToken filterToken) {
@@ -51,8 +55,17 @@ public class Configurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(Ingredient.class, IngredientDto.class)
+                .addMapping(Ingredient::getIngredientName, IngredientDto::setName);
+
+        return modelMapper;
     }
 
 }

@@ -23,7 +23,7 @@ public class IngredientRecipe {
     private Ingredient ingredient;
 
     @Column(name = "ingredient_quantity")
-    private String ingredientQuantity;
+    private String quantity;
 
     public Long getId() {
         return id;
@@ -45,11 +45,11 @@ public class IngredientRecipe {
         this.ingredient = ingredient;
     }
 
-    public String getIngredientQuantity() {
-        return ingredientQuantity;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setIngredientQuantity(String ingredientQuantity) {
-        this.ingredientQuantity = ingredientQuantity;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

@@ -28,25 +28,4 @@ public class MessageService {
         this.recipeService = recipeService;
     }
 
-    public RecipeDto sendMessage(Message message) {
-        RecipeDto recipe = gptService.sendMessageGpt(message.getQuestion());
-        this.recipeService.saveRecipe(recipe, message.getUser().getId());
-        return recipe;
-    }
-
-    public List<Message> getMessages() {
-        return messageRepository.findAll();
-    }
-
-    public List<Message> findByUserId(Long id) {
-        return messageRepository.findMessageByUserId(id);
-    }
-
-    public Message findByIdAndUserId(Long messageId, Long userId) {
-        return messageRepository.findByIdAndUserId(messageId, userId);
-    }
-
-    public void deleteMessage(Message message) {
-        messageRepository.delete(message);
-    }
 }

@@ -1,8 +1,10 @@
 package br.com.fiap.service;
 
+import br.com.fiap.dto.UserRequestDto;
 import br.com.fiap.entity.User;
 import br.com.fiap.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,17 +17,20 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
-    public void createUser(User user) {
+    public void createUser(UserRequestDto userDto) {
 
-        //TODO: Create more validations
-        //TODO: Separete validations into different classes
+        User user = modelMapper.map(userDto, User.class);
+
         if (this.findByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email já existe");
         }

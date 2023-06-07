@@ -1,6 +1,7 @@
 package br.com.fiap.service;
 
 import br.com.fiap.constants.PromptConstants;
+import br.com.fiap.dto.RecipeCreationDto;
 import br.com.fiap.dto.RecipeDto;
 import br.com.fiap.entity.Recipe;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,14 +26,17 @@ public class GptService {
 
     private final OpenAiService service = new OpenAiService("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", Duration.ofSeconds(60));
 
-    public RecipeDto sendMessageGpt(String message) {
+    public RecipeDto sendMessageGpt(RecipeCreationDto recipeDto) {
         List<ChatMessage> messages = Arrays.asList(
                 new ChatMessage(ChatMessageRole.SYSTEM.value(), PromptConstants.RECIPE_INITIALIZER),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_FORMAT),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_RULES),
                 new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_LEVELS),
-                new ChatMessage(ChatMessageRole.USER.value(), "Crie uma receita SOMENTE com: " + message)
-        );
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.LINE_SEPARATOR),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_CREATOR + recipeDto.getIngredients()),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_DIFFICULTY + recipeDto.getDifficulty()),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.MAX_TIME + recipeDto.getPreparationTime())
+                );
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()

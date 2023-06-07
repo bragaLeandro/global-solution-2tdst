@@ -22,13 +22,13 @@ public class Recipe {
     private String difficulty;
 
     @Column(name = "prep_time")
-    private String prepTime;
+    private String preparationTime;
 
     @Column(name = "ds_recipe", length = 6000)
-    private String description;
+    private String preparationMethod;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IngredientRecipe> ingredientRecipes = new ArrayList<>();
+    private List<IngredientRecipe> ingredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe")
     private List<UserRecipe> userRecipes;
@@ -53,21 +53,15 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public String getPrepTime() {
-        return prepTime;
+    public String getPreparationTime() {
+        return preparationTime;
     }
 
-    public void setPrepTime(String prepTime) {
-        this.prepTime = prepTime;
+    public void setPrepTime(String preparationTime) {
+        this.preparationTime = preparationTime;
     }
 
-    public List<IngredientRecipe> getIngredientRecipes() {
-        return ingredientRecipes;
-    }
 
-    public void setIngredientRecipes(List<IngredientRecipe> ingredientRecipes) {
-        this.ingredientRecipes = ingredientRecipes;
-    }
 
     public List<UserRecipe> getUserRecipes() {
         return userRecipes;
@@ -77,11 +71,23 @@ public class Recipe {
         this.userRecipes = userRecipes;
     }
 
-    public String getDescription() {
-        return description;
+    public void setPreparationTime(String preparationTime) {
+        this.preparationTime = preparationTime;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getPreparationMethod() {
+        return preparationMethod;
+    }
+
+    public void setPreparationMethod(String preparationMethod) {
+        this.preparationMethod = preparationMethod;
+    }
+
+    public List<IngredientRecipe> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<IngredientRecipe> ingredients) {
+        this.ingredients = ingredients;
     }
 }

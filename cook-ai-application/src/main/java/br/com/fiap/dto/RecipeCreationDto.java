@@ -1,28 +1,23 @@
 package br.com.fiap.dto;
 
+import br.com.fiap.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeDto {
+public class RecipeCreationDto {
 
-    @JsonProperty("titulo")
-    private String title;
     @JsonProperty("ingredientes")
-    private List<IngredientDto> ingredients;
-    @JsonIgnore
-    private List<String> ingredientNames;
-    @JsonProperty("modoPreparo")
-    private String preparationMethod;
-    @JsonProperty("tempoPreparo")
-    private String preparationTime;
+    private String ingredients;
     @JsonProperty("dificuldade")
     private String difficulty;
+    @JsonProperty("tempoMaximo")
+    private String preparationTime;
+    @JsonIgnore
+    private User user;
 }

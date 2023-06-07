@@ -1,5 +1,6 @@
 package br.com.fiap.controller;
 
+import br.com.fiap.dto.UserRequestDto;
 import br.com.fiap.entity.User;
 import br.com.fiap.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         //TODO: Work with dtos instead of entities
         try {
             userService.createUser(user);
