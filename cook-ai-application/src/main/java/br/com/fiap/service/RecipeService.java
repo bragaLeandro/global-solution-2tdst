@@ -34,7 +34,7 @@ public class RecipeService {
     private final UserRecipeRepository userRecipeRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private GptService gptService;
+    private final GptService gptService;
 
     @Autowired
     public RecipeService(RecipeRepository recipeRepository,
@@ -62,11 +62,11 @@ public class RecipeService {
         return recipe;
     }
 
-    public List<RecipeDto> getRecipesByUser(int page) {
+    public List<RecipeDto> getRecipesByUser(int pageNumber) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.debug("User ID -> {}", user.getId());
 
-        Pageable pageable = PageRequest.of(page, CommonConstants.PAGE_SIZE);
+        Pageable pageable = PageRequest.of(pageNumber, CommonConstants.PAGE_SIZE);
 
         Page<UserRecipe> userRecipes = userRecipeRepository.findAllByUser(user, pageable);
         List<Recipe> recipes = this.findRecipeByUserRecipes(userRecipes.getContent());
@@ -98,26 +98,17 @@ public class RecipeService {
         return userRecipes.stream()
                 .map(UserRecipe::getRecipe).toList();
     }
+
     @Transactional
     public void saveRecipe(RecipeDto recipeDto, Long userId) {
         logger.info("Saving recipe {} from userID {}...", recipeDto.getTitle(), userId);
-
-        Recipe recipe = createRecipe(recipeDto);
-        addIngredientsToRecipe(recipe, recipeDto);
-        associateRecipeToUser(recipe, userId);
-    }
-
-    private Recipe createRecipe(RecipeDto recipeDto) {
         Recipe recipe = new Recipe();
         recipe.setTitle(recipeDto.getTitle());
         recipe.setDifficulty(recipeDto.getDifficulty());
         recipe.setPrepTime(recipeDto.getPreparationTime());
         recipe.setPreparationMethod(recipeDto.getPreparationMethod());
+        recipe = recipeRepository.save(recipe);
 
-        return recipeRepository.save(recipe);
-    }
-
-    private void addIngredientsToRecipe(Recipe recipe, RecipeDto recipeDto) {
         for (IngredientDto ingredientDto : recipeDto.getIngredients()) {
             Ingredient ingredient = ingredientRepository.findIngredientByName(ingredientDto.getName())
                     .orElseGet(() -> {
@@ -134,16 +125,61 @@ public class RecipeService {
             recipe.getIngredients().add(ingredientRecipe);
         }
 
-        recipeRepository.save(recipe);
-    }
-
-    private void associateRecipeToUser(Recipe recipe, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
         UserRecipe userRecipe = new UserRecipe();
         userRecipe.setUser(user);
         userRecipe.setRecipe(recipe);
 
         user.getUserRecipes().add(userRecipe);
+
+        recipeRepository.save(recipe);
     }
+//    @Transactional
+//    public void saveRecipe(RecipeDto recipeDto, Long userId) {
+//        logger.info("Saving recipe {} from userID {}...", recipeDto.getTitle(), userId);
+//
+//        Recipe recipe = createRecipe(recipeDto);
+//        addIngredientsToRecipe(recipe, recipeDto);
+//        associateRecipeToUser(recipe, userId);
+//    }
+//
+//    private Recipe createRecipe(RecipeDto recipeDto) {
+//        Recipe recipe = new Recipe();
+//        recipe.setTitle(recipeDto.getTitle());
+//        recipe.setDifficulty(recipeDto.getDifficulty());
+//        recipe.setPrepTime(recipeDto.getPreparationTime());
+//        recipe.setPreparationMethod(recipeDto.getPreparationMethod());
+//
+//        return recipeRepository.save(recipe);
+//    }
+//
+//    private void addIngredientsToRecipe(Recipe recipe, RecipeDto recipeDto) {
+//        for (IngredientDto ingredientDto : recipeDto.getIngredients()) {
+//            Ingredient ingredient = ingredientRepository.findIngredientByName(ingredientDto.getName())
+//                    .orElseGet(() -> {
+//                        Ingredient newIngredient = new Ingredient();
+//                        newIngredient.setName(ingredientDto.getName());
+//                        return ingredientRepository.save(newIngredient);
+//                    });
+//
+//            IngredientRecipe ingredientRecipe = new IngredientRecipe();
+//            ingredientRecipe.setRecipe(recipe);
+//            ingredientRecipe.setIngredient(ingredient);
+//            ingredientRecipe.setQuantity(ingredientDto.getQuantity());
+//
+//            recipe.getIngredients().add(ingredientRecipe);
+//        }
+//
+//        recipeRepository.save(recipe);
+//    }
+//
+//    private void associateRecipeToUser(Recipe recipe, Long userId) {
+//        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+//        UserRecipe userRecipe = new UserRecipe();
+//        userRecipe.setUser(user);
+//        userRecipe.setRecipe(recipe);
+//
+//        user.getUserRecipes().add(userRecipe);
+//    }
 
 }

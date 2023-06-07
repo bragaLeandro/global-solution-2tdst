@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
-
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
