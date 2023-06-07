@@ -27,15 +27,14 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public void createUser(UserRequestDto userDto) {
+    public void createUser(User user) {
 
-        User user = modelMapper.map(userDto, User.class);
 
         if (this.findByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email já existe");
         }
 
-        //TODO: Put this logic in a new method
+        user.setRole("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);

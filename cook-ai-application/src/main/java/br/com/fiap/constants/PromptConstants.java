@@ -11,7 +11,7 @@ public class PromptConstants {
     public static final String RECIPE_CREATOR = "Crie uma receita SOMENTE com: ";
     public static final String LINE_SEPARATOR = "No atributo modoPreparo, os passos devem vir sempre com uma quebra de linha entre um passo e outro";
 
-    public static final String OUTPUT_RULES = "O texto dentro do atributo modo de preparo não deve ter aspas duplas, pois vai estragar a serialização para objeto";
+    public static final String OUTPUT_RULES = "O texto dentro do atributo modoPreparo nunca deve ter aspas duplas, pois vai estragar a serialização para objeto";
     public static final String MAX_TIME = "A receita pode ter o tempo máximo de: ";
     public static final String RECIPE_DIFFICULTY = "A dificuldade dessa receita deve ser:";
 

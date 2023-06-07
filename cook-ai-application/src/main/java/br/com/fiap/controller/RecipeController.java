@@ -36,6 +36,12 @@ public class RecipeController {
         return recipeService.getRecipesByUser(pageNumber);
     }
 
+    @GetMapping("/all")
+    public List<RecipeDto> getRecipesPaginated(@RequestParam int pageNumber) {
+        logger.info("Calling Service(GET) /recipe/all");
+        return recipeService.getRecipesPaginated(pageNumber);
+    }
+
 //    @DeleteMapping
 //    public ResponseEntity<String> deleteRecipe() {
 //

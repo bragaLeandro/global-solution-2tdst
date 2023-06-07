@@ -62,13 +62,37 @@ public class RecipeService {
         return recipe;
     }
 
-    public List<RecipeDto> getRecipesByUser(int pageNumber) {
+    public List<RecipeDto> getRecipesPaginated(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, CommonConstants.PAGE_SIZE);
+        Page<Recipe> recipes = recipeRepository.findAll(pageable);
+
+        return recipes.stream()
+                .map(recipe -> {
+                    RecipeDto recipeDto = modelMapper.map(recipe, RecipeDto.class);
+
+                    List<IngredientDto> ingredientDtos = recipe.getIngredients().stream()
+                            .map(ingredient -> {
+                                IngredientDto ingredientDto = new IngredientDto();
+                                ingredientDto.setName(ingredient.getIngredient().getIngredientName());
+                                ingredientDto.setQuantity(ingredient.getQuantity());
+                                return ingredientDto;
+                            })
+                            .collect(Collectors.toList());
+
+                    recipeDto.setIngredients(ingredientDtos);
+
+                    return recipeDto;
+                })
+                .collect(Collectors.toList());
+    }
+
+        public List<RecipeDto> getRecipesByUser(int pageNumber) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.debug("User ID -> {}", user.getId());
 
         Pageable pageable = PageRequest.of(pageNumber, CommonConstants.PAGE_SIZE);
 
-        Page<UserRecipe> userRecipes = userRecipeRepository.findAllByUser(user, pageable);
+        Page<UserRecipe> userRecipes = userRecipeRepository.findPaginatedByUser(user, pageable);
         List<Recipe> recipes = this.findRecipeByUserRecipes(userRecipes.getContent());
 
         return recipes.stream()

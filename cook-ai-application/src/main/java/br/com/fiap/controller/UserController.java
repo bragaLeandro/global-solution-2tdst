@@ -22,8 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
-        //TODO: Work with dtos instead of entities
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
             userService.createUser(user);
         } catch (IllegalArgumentException ie) {
