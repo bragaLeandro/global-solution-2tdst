@@ -4,9 +4,13 @@
 
 Combata a fome global com o CookAi: um aplicativo revolucionário com um toque de inteligência artificial. Gerencie alimentos de forma eficiente, crie receitas incríveis e evite desperdícios. Chega de pensar "o que vou cozinhar hoje?" - o CookAi torna a tarefa fácil e divertida!
 
-## 2. Endpoints
+## 2. Vídeo
 
-### 2.1 AuthController
+https://www.youtube.com/watch?v=aH7zKlzqBIQ
+
+## 3. Endpoints
+
+### 3.1 AuthController
 
 - **Endpoint:** POST /login
 - **Descrição:** Este endpoint é utilizado para autenticar o usuário.
@@ -22,7 +26,7 @@ Combata a fome global com o CookAi: um aplicativo revolucionário com um toque d
   
 **Resposta:** Caso a autenticação seja um sucesso, é retornado um JWT de autenticação com validade de 30 minutos.
 
-### 2.2 RecipeController
+### 3.2 RecipeController
 
 - **Endpoint:** POST /recipe
 - **Descrição:** Este endpoint é utilizado para o usuário enviar os ingredientes que serão utilizados para a criação da receita.
@@ -48,7 +52,7 @@ Combata a fome global com o CookAi: um aplicativo revolucionário com um toque d
   ```
 **Resposta:** Em caso de sucesso, retorna uma lista de receitas enviadas pelo usuário com as respostas do modelo de inteligência artificial.
 
-### 2.3 UserController
+### 3.3 UserController
 
 - **Endpoint:** POST /user/register
 - **Descrição:** Este endpoint é utilizado para registrar um novo usuário.
