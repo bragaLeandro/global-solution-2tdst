@@ -90,15 +90,25 @@ A conexão com a API OpenAI é realizada utilizando a biblioteca openai-java, qu
 Exemplo da requisição em JAVA :
 
 ```java
-    OpenAiService openai = new OpenAiService("seu_token_api");
+    public RecipeDto sendMessageGpt(RecipeCreationDto recipeDto) {
+        List<ChatMessage> messages = Arrays.asList(
+                new ChatMessage(ChatMessageRole.SYSTEM.value(), PromptConstants.RECIPE_INITIALIZER),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_FORMAT),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_RULES),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.OUTPUT_EXAMPLE),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_LEVELS),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.LINE_SEPARATOR),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_CREATOR + recipeDto.getIngredients()),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.RECIPE_DIFFICULTY + recipeDto.getDifficulty()),
+                new ChatMessage(ChatMessageRole.USER.value(), PromptConstants.MAX_TIME + recipeDto.getPreparationTime())
+                );
 
-    public String sendMessageGpt(String message) {
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt("Responda essa pergunta: " + message)
-                .maxTokens(2000)
-                .model("text-davinci-003")
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(650)
                 .build();
-
-       return service.createCompletion(completionRequest).getChoices().get(0).getText();
     }
 ```
