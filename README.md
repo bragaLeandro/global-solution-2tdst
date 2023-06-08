@@ -31,6 +31,7 @@ https://www.youtube.com/watch?v=aH7zKlzqBIQ
 - **Endpoint:** POST /recipe
 - **Descrição:** Este endpoint é utilizado para o usuário enviar os ingredientes que serão utilizados para a criação da receita.
 - **Corpo da Solicitação:** O corpo da solicitação deve ser um JSON contendo a mensagem do usuário.
+- **Necessário enviar Bearer token gerado no login em 'Authorization' para utilizar o endpoint**
 
  **Requisição:**
   ```json
@@ -41,16 +42,28 @@ https://www.youtube.com/watch?v=aH7zKlzqBIQ
   }
   ```
 
-**Resposta:** Em caso de sucesso, é retornada a resposta do modelo de inteligência artificial “GPT-3.5-turbo”
+**Resposta:** Em caso de sucesso, é retornada a receita com os ingredientes solicitados
 
 - **Endpoint:** GET /recipe?pageNumber=0
 - **Descrição:** Este endpoint é utilizado para obter as receitas enviadas pelo usuário utilizando o parametro "pageNumber" = 0.
+- **Necessário enviar Bearer token gerado no login em 'Authorization' para utilizar o endpoint**
 
  **Requisição:**
   ```URL
-   GET http://localhost:8080/recipe
+   GET http://localhost:8080/recipe?pageNumber=0
   ```
-**Resposta:** Em caso de sucesso, retorna uma lista de receitas enviadas pelo usuário com as respostas do modelo de inteligência artificial.
+**Resposta:** Em caso de sucesso, retorna uma lista de todas as receitas geradas pelo usuário.
+
+
+- **Endpoint:** GET /recipe/all?pageNumber=0
+- **Descrição:** Este endpoint é utilizado para obter as receitas de todos os usuários, a consulta é paginada e retorna 5 resultados por página, sendo necessário passar o parametro "pageNumber" para trocar de página.
+- **Necessário enviar Bearer token gerado no login em 'Authorization' para utilizar o endpoint**
+
+ **Requisição:**
+  ```URL
+   GET http://localhost:8080/recipe/all?pageNumber=0
+  ```
+**Resposta:** Em caso de sucesso, retorna uma lista das receitas geradas por todos os usuários.
 
 ### 3.3 UserController
 
@@ -71,6 +84,7 @@ https://www.youtube.com/watch?v=aH7zKlzqBIQ
 
 - **Endpoint:** GET /user/all 
 - **Descrição:** Este endpoint é utilizado para obter uma lista de todos os usuários.
+- **Necessário enviar Bearer token gerado no login em 'Authorization' para utilizar o endpoint**
 
  **Requisição:**
   ```URL
